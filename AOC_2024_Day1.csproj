@@ -7,8 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="AOC_Resources\" />
-  </ItemGroup>
-
 </Project>
