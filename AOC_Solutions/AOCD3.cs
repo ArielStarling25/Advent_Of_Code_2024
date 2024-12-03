@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,10 @@ namespace AOC_2024_Day1.AOC_Solutions
         List<string> corruptedData = new List<string>();
         readonly char[] validSeq = {'m','u','l','(',')'};
         readonly string validStr = "mul(";
+        readonly string validStr2 = "do";
+
+        //For part 2 cuz C# is dumb
+        private bool enabled = true;
 
         public AOCD3()
         { 
@@ -107,7 +112,123 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         public void solve2()
         {
-            
+            int final = 0;
+            for (int i = 0; i < corruptedData.Count; i++)
+            {
+                char[] chars = corruptedData[i].ToCharArray();
+                final += dataParse2(chars);
+            }
+            Console.WriteLine("Final2: " + final);
+        }
+
+        public int dataParse2(char[] chars)
+        {
+            int res = 0;
+            int found = 0, yoink = 0;
+            int trueYoink = 0;
+            bool valid = true;
+            string yoinked = "";
+            for (int i = 0; i < (chars.Length - 4); i++)
+            {
+                yoinked = "";
+                valid = false;
+                string snapshot = "";
+                string snapshot2 = "";
+
+                for(int j = 0; j < 2; j++) //check for "do"
+                {
+                    snapshot += chars[i + j];
+                }
+                Console.WriteLine(snapshot);
+                if(snapshot == validStr2)
+                {
+                    snapshot = "";
+                    for(int j = 0; j < 4; j++) // check for "do()"
+                    {
+                        snapshot += chars[i + j];
+                    }
+                    for(int j = 0; j < 7 && (i+j < chars.Length); j++) // check for "don't()"
+                    {
+                        snapshot2 += chars[i + j];
+                    }
+                    Console.WriteLine("Snapshot1:[" + snapshot + "]|Snapshot2:[" + snapshot2 + "]");
+                    if(snapshot == "do()")
+                    {
+                        Console.WriteLine("ENABLED + + +");
+                        enabled = true;
+                    }
+                    else if(snapshot2 == "don't()")
+                    {
+                        Console.WriteLine("DISABLED - - -");
+                        enabled = false;
+                    }
+                }
+
+                snapshot = "";
+                if (enabled)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        snapshot += chars[i + j];
+                    }
+                    Console.WriteLine(snapshot);
+                    if (snapshot == validStr)
+                    {
+                        valid = true;
+                        Console.WriteLine("FOUND");
+                        found++;
+                    }
+                }
+
+                if (valid)
+                {
+                    bool notYoinked = true;
+                    bool falsePositive = false;
+                    bool splitEnc = false;
+                    int indC = i + 4;
+                    int sizeExceed = indC + 8; //largest possible size
+                    while (indC < chars.Length && notYoinked && indC < sizeExceed && !falsePositive)
+                    {
+                        if (chars[indC] == validSeq[4])
+                        {
+                            notYoinked = false;
+                        }
+                        else if (chars[indC] == ',')
+                        {
+                            if (splitEnc)
+                            {
+                                falsePositive = true;
+                            }
+                            else
+                            {
+                                splitEnc = true;
+                                yoinked += chars[indC];
+                            }
+                        }
+                        else
+                        {
+                            yoinked += chars[indC];
+                        }
+                        Console.WriteLine("PROCESS:Yoinked:[" + yoinked + "]");
+                        indC++;
+                    }
+
+                    if (!notYoinked && yoinked.Length > 0)
+                    {
+                        Console.WriteLine("Yoinked:[" + yoinked + "]");
+                        yoink++;
+                        int output1, output2;
+                        string[] split = yoinked.Split(',');
+                        if (int.TryParse(split[0], out output1) && int.TryParse(split[1], out output2))
+                        {
+                            trueYoink++;
+                            res += (output1 * output2);
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("STAT:Found=[" + found + "]|Yoinked=[" + trueYoink + "]|Result=[" + res + "]");
+            return res;
         }
 
         private void init()

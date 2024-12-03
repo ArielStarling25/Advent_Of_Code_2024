@@ -41,7 +41,7 @@ namespace AOC_2024_Day1
         static void day3()
         {
             AOCD3 day3 = new AOCD3();
-            day3.solve1();
+            day3.solve2();
         }
     }
 }
