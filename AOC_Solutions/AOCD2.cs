@@ -8,7 +8,7 @@ namespace AOC_2024_Day1.AOC_Solutions
 {
     public class AOCD2
     {
-        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\Edisons_AOCD2.txt";
+        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD2.txt";
         private List<List<int>> fullList = new List<List<int>>();
 
         public AOCD2()
