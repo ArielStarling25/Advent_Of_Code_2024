@@ -189,7 +189,69 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         public void solve2()
         {
+            int result = 0;
+            for (int x = 1; x < charGrid.Count-1; x++)
+            {
+                for (int y = 1; y < charGrid[x].Count-1; y++)
+                {
+                    if (charGrid[x][y] == validChars[2])
+                    {
+                        result += literalXMASFinder(x,y);
+                    }
+                }
+            }
+            Console.WriteLine("Final 2: " + result);
+        }
 
+
+        // M S | M M | S M | S S
+        //  A  |  A  |  A  |  A
+        // M S | S S | S M | M M
+        private int literalXMASFinder(int indX, int indY)
+        {
+            int res = 0;
+            char[,] validSeqs = {
+                {'M','S','S','M'},
+                {'M','M','S','S'},
+                {'S','M','M','S'},
+                {'S','S','M','M'}
+            };
+            int[,] checkInd = {
+                {-1,-1},
+                {-1,1},
+                {1,1},
+                {1,-1}
+            };
+
+            int pass = 0;
+            for(int i = 0; i < 4; i++)
+            {
+                Console.WriteLine("AT:[" + indX + "][" + indY + "]");
+                for(int j = 0; j < 4; j++)
+                {
+                    int diffX = checkInd[j,0];
+                    int diffY = checkInd[j,1];
+                    Console.Write("Checker:[" + charGrid[indX + diffX][indY + diffY] + "]|Compare:[" + validSeqs[i,j] + "]");
+                    if (charGrid[indX + diffX][indY + diffY] == validSeqs[i, j])
+                    {
+                        Console.WriteLine("| TRUE");
+                        pass++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("| FALSE");
+                    }
+                }
+                Console.WriteLine("PASS_VALUE:[" + pass + "]");
+                if(pass == 4)
+                {
+                    Console.WriteLine("FOUNDAT:[" + indX + "][" + indY + "]");
+                    res++;
+                    break;
+                }
+                pass = 0;
+            }
+            return res;
         }
 
         public void printRawString()

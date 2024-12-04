@@ -52,7 +52,7 @@ namespace AOC_2024_Day1
         static void day4()
         {
             AOCD4 day4 = new AOCD4();
-            day4.solve1();
+            day4.solve2();
         }
 
         static void day5()
