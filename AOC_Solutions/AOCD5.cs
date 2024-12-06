@@ -20,6 +20,9 @@ namespace AOC_2024_Day1.AOC_Solutions
         private List<List<int>> violated = new List<List<int>>(); // [0] = violated ruleset index | [1] = violating page list index
         List<List<int>> fixedListRef = new List<List<int>>();
 
+        //For part 2 rework
+        private List<Violated> listOfViolations = new List<Violated>();
+
         public AOCD5()
         {
             init();
@@ -38,6 +41,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             List<int> passedPageLists = new List<int>();
             for(int i = 0; i < pages.Count; i++)
             {
+                Violated violate = new Violated(pages[i]);
                 for(int j = 0; j < pages[i].Count; j++)
                 {
                     int pass = 0;
@@ -63,7 +67,9 @@ namespace AOC_2024_Day1.AOC_Solutions
                                 Console.WriteLine("INVALID:[" + ruleset[k][0] + "|" + ruleset[k][1] + "] FOR [" + getString(pages[i]) + "]");
                                 viol.Add(k);
                                 viol.Add(i);
+                                violate.addViolatedRuleSet(ruleset[k]);
                                 violated.Add(viol);
+
                             }
                             valid = false;
                         }
@@ -93,6 +99,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                 {
                     Console.WriteLine("Page List: [" + getString(pages[i]) + "] | FAILED");
                 }
+                listOfViolations.Add(violate);
                 passed = 0;
             }
             return passedPageLists;
@@ -193,6 +200,94 @@ namespace AOC_2024_Day1.AOC_Solutions
             for(int i = 0; i < failedList.Count; i++)
             {
                 fixedList.Add(listRepair(failedList[i]));
+            }
+        }
+
+        // ATTEMPT 2 - BRUH
+
+        public void solve22()
+        {
+            List<int> passed = validCheck();
+            List<List<int>> fixedPageNums = new List<List<int>>();
+            for(int i = 0; i < listOfViolations.Count; i++)
+            {
+                if (listOfViolations[i].isViolating())
+                {
+                    listOfViolations[i].printData();
+                    List<int> fixedPages = listRepair2(listOfViolations[i]);
+                }
+            }
+        }
+
+        // 
+        private List<int> listRepair2(Violated violatedList)
+        {
+            List<List<int>> selectMover = new List<List<int>>(); // [0] = index of the chosen pageNum , [1] = furthest index to satisfy violated rulesets 
+            for(int i = 0; i < violatedList.getViolatingPageNums().Count; i++)
+            {
+                // Blep
+            }
+            return null;
+        }
+
+        internal class Violated
+        {
+            List<int> violatingPageNums;
+            List<List<int>> violatedRulesets = new List<List<int>>();
+
+            public Violated(List<int> input)
+            {
+                violatingPageNums = new List<int>(input);
+            }
+
+            public void addViolatedRuleSet(List<int> rule)
+            {
+                violatedRulesets.Add(rule);
+            }
+
+            public List<int> getViolatingPageNums()
+            {
+                return violatingPageNums;
+            }
+
+            public List<List<int>> getViolatedRulesets()
+            {
+                return violatedRulesets;
+            }
+
+            public void printData()
+            {
+                Console.WriteLine("|" + getString() + "| FOR RULESETS:[" + getRuleSetStr() + "]");
+            }
+
+            private string getString()
+            {
+                string val = "";
+                for (int i = 0; i < violatingPageNums.Count; i++)
+                {
+                    val += (violatingPageNums[i] + ",");
+                }
+                return val;
+            }
+
+            private string getRuleSetStr()
+            {
+                string val = "";
+                for(int i = 0; i < violatedRulesets.Count; i++)
+                {
+                    val += (violatedRulesets[i][0] + "|" + violatedRulesets[i][1] + ",");
+                }
+                return val;
+            }
+
+            public bool isViolating()
+            {
+                bool val = false;
+                if(violatedRulesets.Count > 0)
+                {
+                    val = true;
+                }
+                return val;
             }
         }
 
