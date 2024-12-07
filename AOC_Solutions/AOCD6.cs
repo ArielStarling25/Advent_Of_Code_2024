@@ -46,14 +46,12 @@ namespace AOC_2024_Day1.AOC_Solutions
             int result = 0;
             findGuard();
             Console.WriteLine("COMMENCE:StartPos:[" + guardStartPos[0] + "," + guardStartPos[1] + "]");
-            //gridCopy = new List<List<char>>(grid);
             gridCopy = copyGrid(grid);
             printGrid(gridCopy);
             while (!isFinished)
             {
                 isFinished = moveGuard();
             }
-            //printGrid(grid);
             countMarked();
             foreach (List<int> log in positionLog)
             {
@@ -81,15 +79,11 @@ namespace AOC_2024_Day1.AOC_Solutions
                 Console.WriteLine("------------------ Iter:[" + i + "]----------------------");
                 while (!isGone && passThreshold > traversedBefore)
                 {
-                    //Console.WriteLine("GuardPos:[" + guardCurrPos[0] + "," + guardCurrPos[1] + "]");
-                    //Console.WriteLine("Traverse:[" + traversedBefore + "/" + passThreshold + "]");
                     gridCpy = traverseGuard(gridCpy, out isGone);
-                    //printGrid(gridCpy);
                 }
                 if(traversedBefore >= passThreshold)
                 {
                     Console.WriteLine("ADDEDTOPossibleObs:[" + positionLog[i][0] + "," + positionLog[i][1] + "]");
-                    //printGrid(gridCpy);
                     possibleObstacleSpots.Add(positionLog[i]);
                 }
                 else
