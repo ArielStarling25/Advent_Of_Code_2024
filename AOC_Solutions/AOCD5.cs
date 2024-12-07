@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
@@ -9,7 +10,7 @@ namespace AOC_2024_Day1.AOC_Solutions
 {
     public class AOCD5
     {
-        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD5_Example.txt";
+        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD5.txt";
 
         private List<List<int>> ruleset = new List<List<int>>();
         private List<List<int>> pages = new List<List<int>>();
@@ -30,9 +31,13 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         public void solve1()
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             int result = 0;
             result = midPointSum(validCheck());
-            Console.WriteLine("Final 1: " + result);
+            timer.Stop();
+            Console.WriteLine("Final 1: " + result + "Finished in: " + timer.ElapsedMilliseconds + "ms");
+
         }
 
         private List<int> validCheck()
@@ -75,7 +80,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                         }
                         else
                         {
-                            //Console.WriteLine("DEFAULT VALID");
+                            Console.WriteLine("DEFAULT VALID");
                             pass++;
                         }
                     }

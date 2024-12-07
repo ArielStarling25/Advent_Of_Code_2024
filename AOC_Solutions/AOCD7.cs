@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -21,6 +22,8 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         public void solve12()
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             long result = 0;
             int validCount = 0;
             long eqRes = 0;
@@ -33,7 +36,8 @@ namespace AOC_2024_Day1.AOC_Solutions
                     result += equations[i].testValue;
                 }
             }
-            Console.WriteLine("Final: Valid:[" + validCount + "] FOR Total of [" + result + "]");
+            timer.Stop();
+            Console.WriteLine("Final: Valid:[" + validCount + "] FOR Total of [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]" );
         }
 
         private long findValue(DataHolder equation, int indexModified) // Use recursion

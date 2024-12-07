@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -42,12 +43,14 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         public void solve2()
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             bool isFinished = false;
             int result = 0;
             findGuard();
             Console.WriteLine("COMMENCE:StartPos:[" + guardStartPos[0] + "," + guardStartPos[1] + "]");
             gridCopy = copyGrid(grid);
-            printGrid(gridCopy);
+            //printGrid(gridCopy);
             while (!isFinished)
             {
                 isFinished = moveGuard();
@@ -55,11 +58,13 @@ namespace AOC_2024_Day1.AOC_Solutions
             countMarked();
             foreach (List<int> log in positionLog)
             {
-                Console.WriteLine("PositionLog:[" + log[0] + "," + log[1] + "]");
+                //Console.WriteLine("PositionLog:[" + log[0] + "," + log[1] + "]");
             }
-            Console.WriteLine("PosLog: " + positionLog.Count);
+            //Console.WriteLine("PosLog: " + positionLog.Count);
             result = infiniteLoopFinder(gridCopy);
-            Console.WriteLine("Final: " + result);
+            timer.Stop();
+            Console.WriteLine("Final: " + result + " Finished in:[" + timer.ElapsedMilliseconds + "ms]");
+
         }
 
         private int infiniteLoopFinder(List<List<char>> gridCopy)
@@ -76,20 +81,20 @@ namespace AOC_2024_Day1.AOC_Solutions
                 guardCurrPos[0] = guardStartPos[0];
                 guardCurrPos[1] = guardStartPos[1];
                 //printGrid(gridCpy);
-                Console.WriteLine("------------------ Iter:[" + i + "]----------------------");
+                //Console.WriteLine("------------------ Iter:[" + i + "]----------------------");
                 while (!isGone && passThreshold > traversedBefore)
                 {
                     gridCpy = traverseGuard(gridCpy, out isGone);
                 }
                 if(traversedBefore >= passThreshold)
                 {
-                    Console.WriteLine("ADDEDTOPossibleObs:[" + positionLog[i][0] + "," + positionLog[i][1] + "]");
+                    //Console.WriteLine("ADDEDTOPossibleObs:[" + positionLog[i][0] + "," + positionLog[i][1] + "]");
                     possibleObstacleSpots.Add(positionLog[i]);
                 }
                 else
                 {
                     //printGrid(gridCpy);
-                    Console.WriteLine("FAILED TO TRAP GUARD For Obs at:[" + positionLog[i][0] + "," + positionLog[i][1] + "]");
+                    //Console.WriteLine("FAILED TO TRAP GUARD For Obs at:[" + positionLog[i][0] + "," + positionLog[i][1] + "]");
                 }
                 traversedBefore = 0;
             }
