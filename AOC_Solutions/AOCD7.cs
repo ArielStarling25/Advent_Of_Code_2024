@@ -40,7 +40,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             Console.WriteLine("Final: Valid:[" + validCount + "] FOR Total of [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]" );
         }
 
-        private long findValue(DataHolder equation, int indexModified) // Use recursion
+        private long findValue(DataHolder equation, int indexModified) // Use recursion 
         {
             long res = 0;
             if(equation.getSetOperatorCount() < equation.operatorList.Count && indexModified < equation.operatorList.Count) // if operator list hasnt been populated yet
@@ -69,12 +69,12 @@ namespace AOC_2024_Day1.AOC_Solutions
                             Console.WriteLine("FOUND AT:" + eq1.toString());
                             res = equation.testValue;
                         }
-                        if (findValue(eq2, indexModified) == equation.testValue)
+                        else if (findValue(eq2, indexModified) == equation.testValue)
                         {
                             Console.WriteLine("FOUND AT:" + eq2.toString());
                             res = equation.testValue;
                         }
-                        if (findValue(eq3, indexModified) == equation.testValue)                        //
+                        else if (findValue(eq3, indexModified) == equation.testValue)                   //
                         {                                                                               // PART 2
                             Console.WriteLine("FOUND AT:" + eq3.toString());                            //
                             res = equation.testValue;                                                   //

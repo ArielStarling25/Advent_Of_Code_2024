@@ -31,6 +31,9 @@ namespace AOC_2024_Day1
                 case "D7":
                     day7();
                     break;
+                case "D8":
+                    day8();
+                    break;
                 default:
                     Console.WriteLine("Invalid Code");
                     break;
@@ -82,6 +85,13 @@ namespace AOC_2024_Day1
             AOCD7 day7 = new AOCD7();   
             day7.solve12();
             //day7.solve2();
+        }
+
+        static void day8()
+        {
+            AOCD8 day8 = new AOCD8();
+            //day8.solve1();
+            day8.solve2();
         }
     }
 }
