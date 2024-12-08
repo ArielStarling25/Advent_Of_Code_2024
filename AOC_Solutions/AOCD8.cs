@@ -161,8 +161,6 @@ namespace AOC_2024_Day1.AOC_Solutions
                             {
                                 Console.WriteLine("Out Of bounds bruh:[" + antiNodeLoc[0] + "," + antiNodeLoc[1] + "]");
                             }
-                            //antiDX = antiDX - tower.x;
-                            //antiDY = antiDY - tower.y;
                             nodeLocX = nodeLocX + antiDX;
                             nodeLocY = nodeLocY + antiDY;
                         } while (nodeLocX >= 0 && nodeLocX < mainGrid[0].Count && nodeLocY >= 0 && nodeLocY < mainGrid.Count);
