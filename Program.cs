@@ -100,8 +100,9 @@ namespace AOC_2024_Day1
         static void day9()
         {
             AOCD9 day9 = new AOCD9();
-            //day9.solve1();
+            day9.solve1();
             day9.solve2();
+            //day9.differenceCheck();
         }
     }
 }
