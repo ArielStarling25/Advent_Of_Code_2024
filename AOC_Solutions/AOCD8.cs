@@ -121,7 +121,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                 createAntinodes2(towers[i]);
             }
             timer.Stop();
-            //placeAntiNodeAndPrintGrid();
+            placeAntiNodeAndPrintGrid();
             int result = calcTowersAndAntinodes();
             Console.WriteLine("Final 2: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
             antinodes.Clear();
