@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -21,6 +22,8 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         public void solve12()
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             long result = 0;
             int validCount = 0;
             long eqRes = 0;
@@ -33,10 +36,11 @@ namespace AOC_2024_Day1.AOC_Solutions
                     result += equations[i].testValue;
                 }
             }
-            Console.WriteLine("Final: Valid:[" + validCount + "] FOR Total of [" + result + "]");
+            timer.Stop();
+            Console.WriteLine("Final: Valid:[" + validCount + "] FOR Total of [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]" );
         }
 
-        private long findValue(DataHolder equation, int indexModified) // Use recursion
+        private long findValue(DataHolder equation, int indexModified) // Use recursion 
         {
             long res = 0;
             if(equation.getSetOperatorCount() < equation.operatorList.Count && indexModified < equation.operatorList.Count) // if operator list hasnt been populated yet
@@ -65,12 +69,12 @@ namespace AOC_2024_Day1.AOC_Solutions
                             Console.WriteLine("FOUND AT:" + eq1.toString());
                             res = equation.testValue;
                         }
-                        if (findValue(eq2, indexModified) == equation.testValue)
+                        else if (findValue(eq2, indexModified) == equation.testValue)
                         {
                             Console.WriteLine("FOUND AT:" + eq2.toString());
                             res = equation.testValue;
                         }
-                        if (findValue(eq3, indexModified) == equation.testValue)                        //
+                        else if (findValue(eq3, indexModified) == equation.testValue)                   //
                         {                                                                               // PART 2
                             Console.WriteLine("FOUND AT:" + eq3.toString());                            //
                             res = equation.testValue;                                                   //
