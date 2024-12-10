@@ -10,7 +10,8 @@ namespace AOC_2024_Day1.AOC_Solutions
 {
     public class AOCD9
     {
-        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD9.txt";
+        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD9_Ed.txt";
+        private static readonly string inputFile2 = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD9_EdO.txt";
 
         // Part 1
         List<int> rawInput = new List<int>();
@@ -19,6 +20,9 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         // Part 2
         List<DiskFile> diskFiles = new List<DiskFile>();
+
+        // EHm
+        List<DiskBlock> diskBlocks2 = new List<DiskBlock>();
 
         public AOCD9()
         {
@@ -34,23 +38,24 @@ namespace AOC_2024_Day1.AOC_Solutions
             for(int i = 0; i < rawInput.Count-1; i = i + 2)
             {
                 InDiskMap diskm = new InDiskMap(idAssign, rawInput[i], rawInput[i+1]);
-                Console.WriteLine(diskm.genDiskMapping());
+                //Console.WriteLine(diskm.genDiskMapping());
                 diskMap.Add(diskm);
                 idAssign++;
             }
             if (!isEven(rawInput.Count))
             {
                 InDiskMap diskm = new InDiskMap(idAssign, rawInput[rawInput.Count - 1], 0);
-                Console.WriteLine(diskm.genDiskMapping());
+                //Console.WriteLine(diskm.genDiskMapping());
                 diskMap.Add(diskm);
             }
             diskBlocks = constructDiskBlocks();
-            printDiskBlocks(diskBlocks);
+            //printDiskBlocks(diskBlocks);
             diskBlocks = diskBlockCompactor(diskBlocks);
-            printDiskBlocks(diskBlocks);
+            //printDiskBlocks(diskBlocks);
             result = checkSum(diskBlocks);
             timer.Stop();
             Console.WriteLine("Final 1: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
+            diskMap.Clear();
         }
 
         public void solve2()
@@ -62,28 +67,25 @@ namespace AOC_2024_Day1.AOC_Solutions
             for (int i = 0; i < rawInput.Count - 1; i = i + 2)
             {
                 InDiskMap diskm = new InDiskMap(idAssign, rawInput[i], rawInput[i + 1]);
-                Console.WriteLine(diskm.genDiskMapping());
+                //Console.WriteLine(diskm.genDiskMapping());
                 diskMap.Add(diskm);
                 idAssign++;
             }
             if (!isEven(rawInput.Count))
             {
                 InDiskMap diskm = new InDiskMap(idAssign, rawInput[rawInput.Count - 1], 0);
-                Console.WriteLine(diskm.genDiskMapping());
+                //Console.WriteLine(diskm.genDiskMapping());
                 diskMap.Add(diskm);
             }
-            //diskBlocks = constructDiskBlocks();
             diskFiles = constructDiskFiles();
-            printDiskFiles(diskFiles);
+            //printDiskFiles(diskFiles);
             diskBlocks = diskFileCompactor(diskFiles);
-            Console.WriteLine("DiskBlocksVV");
-            printDiskBlocks(diskBlocks);
-            result = checkSum2(diskBlocks);
-            //diskBlocks = diskBlockCompactor(diskBlocks);
+            //Console.WriteLine("DiskBlocksVV");
             //printDiskBlocks(diskBlocks);
-            //result = checkSum(diskBlocks);
+            result = checkSum2(diskBlocks);
             timer.Stop();
             Console.WriteLine("Final 2: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
+            diskMap.Clear();
         }
 
         private List<DiskBlock> constructDiskBlocks()
@@ -170,6 +172,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                     res.Add(b);
                 }
             }
+            //printDiskFiles(construct);
             return res;
         }
 
@@ -186,10 +189,10 @@ namespace AOC_2024_Day1.AOC_Solutions
             }
             for (int i = 0; i < longs.Count; i++)
             {
-                Console.Write(longs[i]);
+                //Console.Write(longs[i]);
                 result += (i * longs[i]);
             }
-            Console.WriteLine();
+            //Console.WriteLine();
             return result;
         }
 
@@ -203,7 +206,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                     result += (long)(i * construct[i].fileID);
                 }
             }
-            Console.WriteLine();
+            //Console.WriteLine();
             return result;
         }
 
@@ -343,7 +346,14 @@ namespace AOC_2024_Day1.AOC_Solutions
 
             public DiskBlock(int? in1)
             {
-                fileID = in1;
+                if(in1 == -1)
+                {
+                    fileID = null;
+                }
+                else
+                {
+                    fileID = in1;
+                }
             }
         }
 
@@ -398,6 +408,68 @@ namespace AOC_2024_Day1.AOC_Solutions
             return (n % 2 == 0);
         }
 
+        public void differenceCheck()
+        {
+            string line;
+            int count = 0;
+            try
+            {
+                StreamReader sr = new StreamReader(inputFile2);
+                line = sr.ReadLine();
+                while (line != null)
+                {
+                    count++;
+                    //VVV Do file reading operations here VVV
+                    line = line.Trim(']');
+                    line = line.Trim('[');
+                    line = line.Replace(" ","");
+                    string[] split = line.Split(',');
+                    foreach(string s in split)
+                    {
+                        DiskBlock db = new DiskBlock(int.Parse(s));
+                        diskBlocks2.Add(db);
+                    }
+                    line = sr.ReadLine();
+                }
+                Console.WriteLine("| " + count + " lines read");
+                printDiskBlocks(diskBlocks);
+                printDiskBlocks(diskBlocks2);
+                checker(diskBlocks, diskBlocks2);
+                sr.Close();
+                Console.WriteLine("| AOC Day 9 Resources Initialized! EHE");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex2)
+            {
+                Console.WriteLine(ex2.Message);
+            }
+        }
+
+        private void checker(List<DiskBlock> in1, List<DiskBlock> in2)
+        {
+            Console.WriteLine("List1:" + in1.Count + "| List2: " + in2.Count);
+            int counter = 0;
+            for(int i = 0; i < in1.Count && i < in2.Count; i++)
+            {
+                if (in1[i].fileID == null && in2[i].fileID == null)
+                {
+                    //Do nothing
+                }
+                else
+                {
+                    if (in1[i].fileID != in2[i].fileID)
+                    {
+                        Console.WriteLine("DIFFERENCE AT:[" + i + "] WHERE IN1:[" + in1[i].fileID + "] IN2:[" + in2[i].fileID + "]");
+                        counter++;
+                    }
+                }
+            }
+            Console.WriteLine("Final Difference:[" + counter + "]");
+        }
+
         private void init()
         {
             string line;
@@ -413,7 +485,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                     char[] chars = line.ToCharArray();
                     foreach(char num in chars)
                     {
-                        rawInput.Add(num-'0'); // WTH IS THIS C#??
+                        rawInput.Add(num-'0');
                     }
                     line = sr.ReadLine();
                 }
