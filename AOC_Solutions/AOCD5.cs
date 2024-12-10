@@ -24,6 +24,11 @@ namespace AOC_2024_Day1.AOC_Solutions
         //For part 2 rework
         private List<Violated> listOfViolations = new List<Violated>();
 
+        //For Part 2 Re-Rework
+        /*
+        https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.sort?view=net-9.0#system-collections-generic-list-1-sort(system-comparison((-0)))
+        */
+
         public AOCD5()
         {
             init();
@@ -80,7 +85,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                         }
                         else
                         {
-                            Console.WriteLine("DEFAULT VALID");
+                            //Console.WriteLine("DEFAULT VALID");
                             pass++;
                         }
                     }
@@ -204,8 +209,23 @@ namespace AOC_2024_Day1.AOC_Solutions
 
             for(int i = 0; i < failedList.Count; i++)
             {
-                fixedList.Add(listRepair(failedList[i]));
+                fixedList.Add(listRepairRework2(failedList[i]));
             }
+            foreach(List<int> list in fixedList)
+            {
+                Console.Write("[");
+                foreach(int ints in list)
+                {
+                    Console.Write(ints + ",");
+                }
+                Console.WriteLine("]");
+            }
+            int result = 0;
+            foreach(List<int> list in fixedList)
+            {
+                result += list[list.Count / 2];
+            }
+            Console.WriteLine("Final 2: [" + result + "]");
         }
 
         // ATTEMPT 2 - BRUH
@@ -296,152 +316,30 @@ namespace AOC_2024_Day1.AOC_Solutions
             }
         }
 
-        private List<int> listRepair(List<int> list)
+        // ┬─┬ノ(ಠ_ಠノ)
+        private List<int> listRepairRework2(List<int> list)
         {
-            bool nowValid = false;
-            for(int i = 0; i < violated.Count; i++)
+            list.Sort(delegate (int x, int y)
             {
-                if(doesContainListMatch(fixedListRef, list))
+                return getRule(x, y);
+            });
+            return list;
+        }
+
+        private int getRule(int x, int y)
+        {
+            for(int i = 0; i < ruleset.Count; i++)
+            {
+                if (ruleset[i][0] == x && ruleset[i][1] == y) // x < y
                 {
-                    break;
+                    return -1;
                 }
-                if(numExists(list, ruleset[violated[i][0]][0]) && numExists(list, ruleset[violated[i][0]][1]))
+                else if (ruleset[i][0] == y && ruleset[i][1] == x) // y < x
                 {
-                    int ind1 = numFind(list, ruleset[violated[i][0]][0]);
-                    int ind2 = numFind(list, ruleset[violated[i][0]][1]);
-                    Console.WriteLine("Violated RuleSet:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(list) + "] | IND1:[" + ind1 + "] IND2:[" + ind2 + "]");
-                    // ind2 must be placed behind ind1 somewhere
-                    Console.WriteLine("1st Attempt");
-                    if (checkIfValid(list))
-                    {
-                        nowValid = true;
-                    }
-                    // 1st att => move ind2 behind ind1
-                    if (!nowValid)
-                    {
-                        for (int j = ind1; j > 0; j--)
-                        {
-                            List<int> tempList = new List<int>(list);
-                            tempList = swap(tempList, ind2, j);
-                            Console.WriteLine("SWAPPING:[" + list[ind2] + "][" + list[j] + "]");
-                            Console.WriteLine("Attempt1:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(tempList) + "]");
-                            if (checkIfValid(tempList))
-                            {
-                                nowValid = true;
-                                fixedListRef.Add(list);
-                                list = tempList;
-                                Console.WriteLine("List:[" + getString(list) + "] now valid :) | 1st Att");
-                                break;
-                            }
-                        }
-                    }
-                    // 2nd att => move ind1 infront of ind2
-                    if (!nowValid)
-                    {
-                        Console.WriteLine("2nd Attempt");
-                        for (int j = ind2; j < list.Count; j++)
-                        {
-                            List<int> tempList = new List<int>(list);
-                            tempList = swap(tempList, ind1, j);
-                            Console.WriteLine("SWAPPING:[" + list[ind1] + "][" + list[j] + "]");
-                            Console.WriteLine("Attempt2:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(tempList) + "]");
-                            if (checkIfValid(tempList))
-                            {
-                                nowValid = true;
-                                fixedListRef.Add(list);
-                                list = tempList;
-                                Console.WriteLine("List:[" + getString(list) + "] now valid :) | 2nd Att");
-                                break;
-                            }
-                        }
-                    }
-                    // 3rd att => move ind2 behind ind1 in bubble sort manner
-                    if (!nowValid)
-                    {
-                        Console.WriteLine("3rd Attempt");
-                        for (int j = ind1; j > 0; j--)
-                        {
-                            List<int> tempList = new List<int>(list);
-                            tempList = bubbleStyleMove(list, ind2, j);
-                            Console.WriteLine("Attempt3:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(tempList) + "]");
-                            if (checkIfValid(tempList))
-                            {
-                                nowValid = true;
-                                fixedListRef.Add(list);
-                                list = tempList;
-                                Console.WriteLine("List:[" + getString(list) + "] now valid :) | 3st Att");
-                                break;
-                            }
-                        }
-                    }
-                    // 4th att => move ind1 infront of ind2 in bubble sort manner
-                    if (!nowValid)
-                    {
-                        Console.WriteLine("4th Attempt");
-                        for (int j = ind2; j < list.Count; j++)
-                        {
-                            List<int> tempList = new List<int>(list);
-                            tempList = bubbleStyleMove(list, ind1, j);
-                            Console.WriteLine("Attempt4:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(tempList) + "]");
-                            if (checkIfValid(tempList))
-                            {
-                                nowValid = true;
-                                fixedListRef.Add(list);
-                                list = tempList;
-                                Console.WriteLine("List:[" + getString(list) + "] now valid :) | 4th Att");
-                                break;
-                            }
-                        }
-                    }
-                    // 5th att => place ind2 anywhere behind ind1 and shuffle everything to make room
-                    if (!nowValid)
-                    {
-                        Console.WriteLine("5th Attempt");
-                        for (int j = ind1; j > 0; j--)
-                        {
-                            List<int> tempList = new List<int>(list);
-                            tempList = shufflePlace(tempList, ind2, j);
-                            Console.WriteLine("Attempt5:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(tempList) + "]");
-                            if (checkIfValid(tempList))
-                            {
-                                nowValid = true;
-                                fixedListRef.Add(list);
-                                list = tempList;
-                                Console.WriteLine("List:[" + getString(list) + "] now valid :) | 5th Att");
-                                break;
-                            }
-                        }
-                    }
-                    //6th att => place ind1 anywhere infront of ind2 and shuffle everything to make room
-                    if (!nowValid)
-                    {
-                        Console.WriteLine("6th Attempt");
-                        for (int j = ind2; j < list.Count; j++)
-                        {
-                            List<int> tempList = new List<int>(list);
-                            tempList = shufflePlace(tempList, ind1, j);
-                            Console.WriteLine("Attempt6:[" + ruleset[violated[i][0]][0] + "|" + ruleset[violated[i][0]][1] + "] FOR [" + getString(tempList) + "]");
-                            if (checkIfValid(tempList))
-                            {
-                                nowValid = true;
-                                fixedListRef.Add(list);
-                                list = tempList;
-                                Console.WriteLine("List:[" + getString(list) + "] now valid :) | 6th Att");
-                                break;
-                            }
-                        }
-                    }
-                    if (nowValid)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("LIST REPAIR : FAILED");
-                    }
+                    return 1;
                 }
             }
-            return list;
+            return 0;
         }
 
         private List<int> shufflePlace(List<int> list, int source, int dest)
