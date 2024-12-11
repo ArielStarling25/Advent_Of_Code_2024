@@ -121,7 +121,10 @@ namespace AOC_2024_Day1
         static void day11()
         {
             AOCD11 day11 = new AOCD11();
-
+            //day11.solve1();
+            //day11.solve2();
+            //day11.solve2Optimised();
+            day11.solve2Blazing();
         }
     }
 }
