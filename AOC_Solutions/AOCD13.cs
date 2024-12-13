@@ -13,7 +13,7 @@ namespace AOC_2024_Day1.AOC_Solutions
 {
     public class AOCD13
     {
-        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD13_Example.txt";
+        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD13.txt";
 
         private List<ClawMachine> clawMachines = new List<ClawMachine>();
 
@@ -53,7 +53,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                 prizeAdjust[0] = prizeAdjust[0] + adjust;
                 prizeAdjust[1] = prizeAdjust[1] + adjust;
                 machine.setPrize(prizeAdjust);
-                machine.minTokens = minTokensToWinEnhanced2(machine);
+                machine.minTokens = minTokensToWinEnhanced3(machine);
                 Console.WriteLine(machine);
                 if (machine.minTokens > 0)
                 {
@@ -149,6 +149,42 @@ namespace AOC_2024_Day1.AOC_Solutions
             }
 
             return (aPresses * 3) + bPresses;
+        }
+
+        private long minTokensToWinEnhanced3(ClawMachine machine) // Edison big brein moment, i no brein, i smooth brein
+        {
+            long ax = machine.buttonA.valueX, ay = machine.buttonA.valueY;
+            long bx = machine.buttonB.valueX, by = machine.buttonB.valueY;
+            long px = machine.prize[0], py = machine.prize[1];
+            if(!isWholeNumber((ay * px) - (ax * py), (bx * ay) - (by * ax)))
+            {
+                return -1;
+            }
+            long bPresses = ((ay * px) - (ax * py))/((bx * ay) - (by * ax));
+            if(!isWholeNumber(px - (bx * bPresses), ax))
+            {
+                return -1;
+            }
+            long aPresses = (px - (bx * bPresses)) / ax;
+            long res = (aPresses * 3) + bPresses;
+            if(bPresses < 0 || aPresses < 0)
+            {
+                return -1;
+            }
+            else
+            {
+                return res;
+            }
+        }
+
+        private bool isWholeNumber(double num)
+        {
+            return num % 1 == 0;
+        }
+
+        private bool isWholeNumber(long num, long num2)
+        {
+            return (num % num2) == 0;
         }
 
         private long lcm(long in1, long in2)
