@@ -15,6 +15,7 @@ namespace AOC_2024_Day1.AOC_Solutions
 
         private static readonly int BLINKS = 25;
         private static readonly int EXTBLINKS = 75;
+        private static readonly int HAHABLINKS = 100;
 
         public AOCD11()
         {
@@ -106,7 +107,6 @@ namespace AOC_2024_Day1.AOC_Solutions
                 int blinkCount = numOfBlinks - 1;   
                 for (int i = 0; i < stones.Count; i++)
                 {
-                    //output.AddRange(blinker(blinkCount, blink(stones[i])));
                     output += blinker(blinkCount, blink(stones[i]));
                 }
                 return output;
@@ -181,7 +181,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             }
             else
             {
-                newRecord = updateRecord(newRecord, key * 2024, value);
+                newRecord = updateRecord(newRecord, key * (long)2024, value);
             }
             return newRecord;
         }
