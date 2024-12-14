@@ -68,13 +68,6 @@ namespace AOC_2024_Day1.AOC_Solutions
             int result = q1 * q2 * q3 * q4;
             timer.Stop();
             Console.WriteLine("Final 1: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
-            /*
-            robots[10].xLimit = setJLimitExample;
-            robots[10].yLimit = setILimitExample;
-            robots[10].moveAll(5);
-            Console.WriteLine(robots[10]);
-            placeRobotOnMap(robots[10]);
-            */
         }
 
         public void solve2()
@@ -84,19 +77,15 @@ namespace AOC_2024_Day1.AOC_Solutions
             {
                 robots[i].xLimit = setJLimit;
                 robots[i].yLimit = setILimit;
-                //Console.WriteLine("Robot:" + (i + 1));
-                //Console.WriteLine(robots[i]);
-                robots[i].moveAll(7750);
-                //Console.WriteLine(robots[i]);
+                robots[i].moveAll(7846);
             }
-            counter = 7750;
+            counter = 7846;
             while (isOn)
             {
                 for (int i = 0; i < robots.Count; i++)
                 {
                     robots[i].xLimit = setJLimit;
                     robots[i].yLimit = setILimit;
-                    //Console.WriteLine("Robot:" + (i + 1));
                     robots[i].moveAll(1);
                 }
                 placeRobotsOnMap(robots);
