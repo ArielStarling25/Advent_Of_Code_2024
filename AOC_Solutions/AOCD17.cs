@@ -59,7 +59,7 @@ namespace AOC_2024_Day1.AOC_Solutions
         public void solve2b()
         {
             Console.WriteLine();
-            Console.WriteLine(computeMatcher2(makeLongCopy(program.ToArray()), 0));
+            Console.WriteLine(Find(makeLongCopy(program.ToArray()), 0));
         }
 
         private long computeMatcher(List<int> instruct, long[] operandContainer)
@@ -142,12 +142,10 @@ namespace AOC_2024_Day1.AOC_Solutions
             return res;
         }
 
-        private long? computeMatcher2(long[] target, long ans) // Totally didnt AI this
+        private long? Find(long[] target, long ans)
         {
-            if (target.Length == 0)
-            {
-                return ans;
-            }
+            if (target.Length == 0) return ans;
+
             for (long t = 0; t < 8; t++)
             {
                 long a = (ans << 3) | t;
@@ -212,7 +210,7 @@ namespace AOC_2024_Day1.AOC_Solutions
 
                     if (output == target[target.Length - 1])
                     {
-                        long? sub = computeMatcher2(target[0..^1], a);
+                        long? sub = Find(target[0..^1], a);
                         if (sub == null) continue;
                         return sub;
                     }
