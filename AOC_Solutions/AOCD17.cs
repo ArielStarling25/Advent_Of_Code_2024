@@ -70,7 +70,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             {
                 if (output.Length < oriInst.Length)
                 {
-                    aVal += ((output.Length + oriInst.Length) * (output.Length * 1000));
+                    aVal += 1000;
                 }
                 else
                 {
@@ -170,8 +170,8 @@ namespace AOC_2024_Day1.AOC_Solutions
 
                     if (ins == 0)
                     {
-                        if (adv3) throw new InvalidOperationException("program has multiple ADVs");
-                        if (operand != 3) throw new InvalidOperationException("program has ADV with operand other than 3");
+                        if (adv3) throw new InvalidOperationException();
+                        if (operand != 3) throw new InvalidOperationException();
                         adv3 = true;
                     }
                     else if (ins == 1)
@@ -184,7 +184,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                     }
                     else if (ins == 3)
                     {
-                        throw new InvalidOperationException("program has JNZ inside expected loop body");
+                        throw new InvalidOperationException();
                     }
                     else if (ins == 4)
                     {
@@ -192,7 +192,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                     }
                     else if (ins == 5)
                     {
-                        if (output.HasValue) throw new InvalidOperationException("program has multiple OUT");
+                        if (output.HasValue) throw new InvalidOperationException();
                         output = Combo(operand) % 8;
                     }
                     else if (ins == 6)
