@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +18,24 @@ namespace AOC_2024_Day1
 
         public void solve1()
         {
+            int result = 0;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            //Code
 
+            timer.Stop();
+            Console.WriteLine("Final 1: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
         }
 
         public void solve2()
         {
+            int result = 0;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            //Code
 
+            timer.Stop();
+            Console.WriteLine("Final 2: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
         }
 
         private void init()
