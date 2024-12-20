@@ -87,11 +87,9 @@ namespace AOC_2024_Day1.AOC_Solutions
                 return -1;
             }
 
-            // Queue for BFS
             Queue<(int x, int y, int distance)> queue = new Queue<(int, int, int)>();
             bool[,] visited = new bool[row, col];
 
-            // Start from the first cell
             queue.Enqueue((0, 0, 0));
             visited[0, 0] = true;
 
@@ -99,13 +97,11 @@ namespace AOC_2024_Day1.AOC_Solutions
             {
                 var (x, y, distance) = queue.Dequeue();
 
-                // If we reach the destination
                 if (x == row - 1 && y == col - 1)
                 {
                     return distance;
                 }
 
-                // Explore all four directions
                 for (int i = 0; i < directions.GetLength(0); i++)
                 {
                     int newX = x + directions[i, 0];
@@ -178,7 +174,11 @@ namespace AOC_2024_Day1.AOC_Solutions
                 { -1, 0 }, // up
                 { 1, 0 }, // down
                 { 0, -1 }, // left
-                { 0, 1 } // right
+                { 0, 1 }, // right
+                { -1, -1},
+                { 1, 1 },
+                { 1, -1},
+                { -1, 1 },
             };
 
             while (openList.Count > 0)
