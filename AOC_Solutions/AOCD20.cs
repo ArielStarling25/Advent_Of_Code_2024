@@ -10,7 +10,7 @@ namespace AOC_2024_Day1.AOC_Solutions
 {
     public class AOCD20
     {
-        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD20_Example.txt";
+        private static readonly string inputFile = "C:\\Users\\user\\Desktop\\Ariel's Folder\\Training\\AdventOfCode_2024\\AOC_2024_Day1\\AOC_Resources\\AOCD20.txt";
 
         private List<List<char>> mainGrid = new List<List<char>>();
         private static List<(int, int)> possibleCheats = new List<(int, int)>();
@@ -34,15 +34,141 @@ namespace AOC_2024_Day1.AOC_Solutions
             Console.WriteLine("Final 1: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
         }
 
-        public void solve2()
+        public void solve2() // alone attempt
         {
             int result = 0;
             Stopwatch timer = new Stopwatch();
             timer.Start();
             //Code
-            result = findShortestRoutes2(mainGrid, 50, true);
+            result = findShortestRoutes2(mainGrid, 100, true);
             timer.Stop();
             Console.WriteLine("Final 2: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
+        }
+
+        public void solve2b() // help from internet :P (I got lazy after my attempt didnt seem to work very well)
+        {
+            int result = 0;
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            //Code
+            result = floodFillRoutes(mainGrid);
+            timer.Stop();
+            Console.WriteLine("Final 2: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
+        }
+
+        public int floodFillRoutes(List<List<char>> inputGrid)
+        {
+            char[,] grid;
+            int sr = -1, sc = -1, er = -1, ec = -1;
+            int rows = inputGrid.Count;
+            int cols = inputGrid[0].Count;
+            grid = new char[rows, cols];
+
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    char character = inputGrid[r][c];
+                    if (character == 'S')
+                    {
+                        sr = r;
+                        sc = c;
+                        character = '.';
+                    }
+                    if (character == 'E')
+                    {
+                        er = r;
+                        ec = c;
+                        character = '.';
+                    }
+                    grid[r, c] = character;
+                }
+            }
+
+            int[,] distanceFromStart = new int[rows, cols];
+            int[,] distanceFromEnd = new int[rows, cols];
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    distanceFromStart[r, c] = -1;
+                    distanceFromEnd[r, c] = -1;
+                }
+            }
+            distanceFromStart[sr, sc] = 0;
+            distanceFromEnd[er, ec] = 0;
+
+            Queue<(int, int)> cellsFromStart = new Queue<(int, int)>();
+            cellsFromStart.Enqueue((sr, sc));
+            while (cellsFromStart.Count > 0)
+            {
+                var cell = cellsFromStart.Dequeue();
+                int distance = distanceFromStart[cell.Item1, cell.Item2];
+                foreach (var (nr, nc) in GetNeighbors(cell.Item1, cell.Item2, rows, cols))
+                {
+                    if (grid[nr, nc] == '.' && (distanceFromStart[nr, nc] == -1 || distanceFromStart[nr, nc] > distance + 1))
+                    {
+                        distanceFromStart[nr, nc] = distance + 1;
+                        cellsFromStart.Enqueue((nr, nc));
+                    }
+                }
+            }
+
+            Queue<(int, int)> cellsFromEnd = new Queue<(int, int)>();
+            cellsFromEnd.Enqueue((er, ec));
+            while (cellsFromEnd.Count > 0)
+            {
+                var cell = cellsFromEnd.Dequeue();
+                int distance = distanceFromEnd[cell.Item1, cell.Item2];
+                foreach (var (nr, nc) in GetNeighbors(cell.Item1, cell.Item2, rows, cols))
+                {
+                    if (grid[nr, nc] == '.' && (distanceFromEnd[nr, nc] == -1 || distanceFromEnd[nr, nc] > distance + 1))
+                    {
+                        distanceFromEnd[nr, nc] = distance + 1;
+                        cellsFromEnd.Enqueue((nr, nc));
+                    }
+                }
+            }
+
+            int total = 0;
+            int nonCheatTime = distanceFromStart[er, ec];
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    if (grid[r, c] == '.')
+                    {
+                        for (int dr = -20; dr <= 20; dr++)
+                        {
+                            for (int dc = -20; dc <= 20; dc++)
+                            {
+                                if (Math.Abs(dr) + Math.Abs(dc) <= 20 && (dr != 0 || dc != 0))
+                                {
+                                    int nr = r + dr;
+                                    int nc = c + dc;
+                                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr, nc] == '.')
+                                    {
+                                        int savings = nonCheatTime - (distanceFromStart[r, c] + Math.Abs(dr) + Math.Abs(dc) + distanceFromEnd[nr, nc]);
+                                        if (savings >= 100)
+                                        {
+                                            total++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return total;
+        }
+
+        private static IEnumerable<(int, int)> GetNeighbors(int r, int c, int rows, int cols) // for 2b
+        {
+            if (r > 0) yield return (r - 1, c); // Up
+            if (r < rows - 1) yield return (r + 1, c); // Down
+            if (c > 0) yield return (r, c - 1); // Left
+            if (c < cols - 1) yield return (r, c + 1); // Right
         }
 
         private int findShortestRoutes(List<List<char>> grid, int picosSaved, bool exact)
@@ -324,7 +450,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             {
                 var (x, y, distance) = queue.Dequeue();
 
-                if(distance <= 20)
+                if(distance <= 20 && distance > 0)
                 {
                     if(outPointAvailable((x, y), invertedGrid, endpoints))
                     {

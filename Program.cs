@@ -213,7 +213,8 @@ namespace AOC_2024_Day1
         {
             AOCD20 aOCD20 = new AOCD20();
             //aOCD20.solve1();
-            aOCD20.solve2();
+            //aOCD20.solve2();
+            aOCD20.solve2b();
         }
     }
 }
