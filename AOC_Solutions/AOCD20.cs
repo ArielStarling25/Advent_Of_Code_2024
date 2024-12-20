@@ -45,7 +45,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             Console.WriteLine("Final 2: [" + result + "] Finished in:[" + timer.ElapsedMilliseconds + "ms]");
         }
 
-        public void solve2b() // help from internet :P (I got lazy after my attempt didnt seem to work very well)
+        public void solve2b() // help from internet :P 
         {
             int result = 0;
             Stopwatch timer = new Stopwatch();
@@ -98,6 +98,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             distanceFromStart[sr, sc] = 0;
             distanceFromEnd[er, ec] = 0;
 
+            // Basically a mini BFS from the start
             Queue<(int, int)> cellsFromStart = new Queue<(int, int)>();
             cellsFromStart.Enqueue((sr, sc));
             while (cellsFromStart.Count > 0)
@@ -114,6 +115,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                 }
             }
 
+            // Mini BFS from the end
             Queue<(int, int)> cellsFromEnd = new Queue<(int, int)>();
             cellsFromEnd.Enqueue((er, ec));
             while (cellsFromEnd.Count > 0)
@@ -130,6 +132,7 @@ namespace AOC_2024_Day1.AOC_Solutions
                 }
             }
 
+            // Determining the number of cheat paths that would give picosecond savings of at least 100 picoseconds
             int total = 0;
             int nonCheatTime = distanceFromStart[er, ec];
             for (int r = 0; r < rows; r++)
