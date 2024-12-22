@@ -183,10 +183,6 @@ namespace AOC_2024_Day1.AOC_Solutions
 
             int initRes = BFS_Detector(makeCopy(gridInt), start, end);
             Console.WriteLine("InitResult: " + initRes);
-            foreach((int, int) n in possibleCheats)
-            {
-                Console.WriteLine("Possible Cheat At:[" + n.Item1 + "," + n.Item2 + "]");
-            }
             Console.WriteLine("Finding Savings...");
             foreach((int, int) cheat in possibleCheats)
             {
@@ -341,7 +337,7 @@ namespace AOC_2024_Day1.AOC_Solutions
             {
                 var (x, y, distance) = queue.Dequeue();
 
-                Console.WriteLine("Travel:[" + x + "," + y + "]");
+                //Console.WriteLine("Travel:[" + x + "," + y + "]");
                 detectAndFindPossibleCheats((x, y), grid);
 
                 if (x == end.Item1 && y == end.Item2)

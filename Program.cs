@@ -70,6 +70,12 @@ namespace AOC_2024_Day1
                 case "D20":
                     day20();
                     break;
+                case "D21":
+                    day21();
+                    break;
+                case "D22":
+                    day22();
+                    break;
                 default:
                     Console.WriteLine("Invalid Code");
                     break;
@@ -212,9 +218,23 @@ namespace AOC_2024_Day1
         static void day20()
         {
             AOCD20 aOCD20 = new AOCD20();
-            //aOCD20.solve1();
+            aOCD20.solve1();
             //aOCD20.solve2();
             aOCD20.solve2b();
+        }
+
+        static void day21()
+        {
+            //AOCD21 aOCD21 = new AOCD21();
+            //aOCD21.solve1();
+            AOCD21B aOCD21B = new AOCD21B();
+        }
+
+        static void day22()
+        {
+            AOCD22 aOCD22 = new AOCD22();
+            //aOCD22.solve1();
+            aOCD22.solve2();
         }
     }
 }
